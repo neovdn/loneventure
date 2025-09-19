@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Character, Campaign, ChatMessage } from '../../types';
+import { Character, Campaign, ChatMessage, NormalizedChatMessage } from '../../types';
 import { campaignService } from '../../services/campaignService';
 import { graniteService } from '../../services/graniteService';
+import { formatTimestamp, normalizeTimestamp } from '../../utils/dateHelpers';
 import { ArrowLeft, Send, Loader } from 'lucide-react';
 import DiceRoller from '../UI/DiceRoller';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -13,6 +14,7 @@ interface CampaignInterfaceProps {
 
 const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack }) => {
   const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const [normalizedMessages, setNormalizedMessages] = useState<NormalizedChatMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [messageInput, setMessageInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -23,8 +25,19 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
   }, [character.id]);
 
   useEffect(() => {
-    scrollToBottom();
+    // Normalize message timestamps whenever campaign changes
+    if (campaign?.conversationHistory) {
+      const normalized = campaign.conversationHistory.map(message => ({
+        ...message,
+        timestamp: normalizeTimestamp(message.timestamp)
+      }));
+      setNormalizedMessages(normalized);
+    }
   }, [campaign?.conversationHistory]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [normalizedMessages]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -184,7 +197,7 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
             <div className="card h-[600px] flex flex-col">
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {campaign.conversationHistory.map((message) => (
+                {normalizedMessages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${message.sender === 'player' ? 'justify-end' : 'justify-start'}`}
@@ -201,7 +214,7 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
                           {message.sender === 'player' ? character.name : 'Dungeon Master'}
                         </span>
                         <span className="text-xs opacity-70">
-                          {message.timestamp.toLocaleTimeString()}
+                          {formatTimestamp(message.timestamp)}
                         </span>
                       </div>
                       <p className="whitespace-pre-wrap">{message.content}</p>

@@ -5,6 +5,7 @@ import { characterService } from '../../services/characterService';
 import CharacterCard from '../Characters/CharacterCard';
 import CharacterCreation from '../Characters/CharacterCreation';
 import CampaignInterface from '../Campaign/CampaignInterface';
+import ErrorBoundary from '../UI/ErrorBoundary';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { Plus, Users, Scroll } from 'lucide-react';
 
@@ -103,10 +104,12 @@ const Dashboard: React.FC = () => {
 
   if (view === 'play' && selectedCharacter) {
     return (
-      <CampaignInterface
-        character={selectedCharacter}
-        onBack={handleBackToDashboard}
-      />
+      <ErrorBoundary>
+        <CampaignInterface
+          character={selectedCharacter}
+          onBack={handleBackToDashboard}
+        />
+      </ErrorBoundary>
     );
   }
 

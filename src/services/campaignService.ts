@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Campaign, ChatMessage } from '../types';
+import { normalizeTimestamp } from '../utils/dateHelpers';
 
 const CAMPAIGNS_COLLECTION = 'campaigns';
 
@@ -101,10 +102,14 @@ export const campaignService = {
         return {
           id: docSnap.id,
           ...data,
-          conversationHistory: data.conversationHistory?.map((msg: any) => ({
-            ...msg,
-            timestamp: msg.timestamp?.toDate ? msg.timestamp.toDate() : new Date(msg.timestamp)
-          })) || []
+          conversationHistory: data.conversationHistory?.map((msg: any) => {
+            // Normalize timestamp but keep original structure for compatibility
+            const normalizedMsg = {
+              ...msg,
+              timestamp: msg.timestamp?.toDate ? msg.timestamp.toDate() : normalizeTimestamp(msg.timestamp)
+            };
+            return normalizedMsg;
+          }) || []
         } as Campaign;
       }
       return null;

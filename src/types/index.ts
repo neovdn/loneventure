@@ -49,11 +49,16 @@ export interface ChatMessage {
   id: string;
   sender: 'player' | 'dm';
   content: string;
-  timestamp: Date;
+  timestamp: Date | any; // Allow for Firestore Timestamp objects during data loading
   diceRoll?: {
     dice: string;
     result: number;
   };
+}
+
+// Type for normalized chat messages with guaranteed Date timestamps
+export interface NormalizedChatMessage extends Omit<ChatMessage, 'timestamp'> {
+  timestamp: Date;
 }
 
 export interface DiceRoll {
