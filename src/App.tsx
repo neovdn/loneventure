@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-900">
-      <Header />
+      <Header currentView="home" onNavigate={() => {}} />
       <Dashboard />
     </div>
   );
