@@ -29,6 +29,3 @@ The application is already deployed and can be accessed at:
 
 The source code is available at:
 🔗 https://github.com/neovdn/loneventure/
-
-npm start
-The application should now be running at http://localhost:3000.
