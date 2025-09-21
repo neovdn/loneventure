@@ -4,9 +4,15 @@ import AuthForm from './components/Auth/AuthForm';
 import Dashboard from './components/Dashboard/Dashboard';
 import Header from './components/Layout/Header';
 import LoadingSpinner from './components/UI/LoadingSpinner';
+import { useState } from 'react';
 
 function App() {
   const { user, loading } = useAuth();
+  const [currentView, setCurrentView] = useState('home');
+
+  const handleNavigate = (view: string) => {
+    setCurrentView(view);
+  };
 
   if (loading) {
     return (
@@ -21,9 +27,11 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      <Header currentView="home" onNavigate={() => {}} />
-      <Dashboard />
+    <div className="min-h-screen bg-slate-950">
+      <Header currentView={currentView} onNavigate={handleNavigate} />
+      <div className="pt-20">
+        <Dashboard currentView={currentView} onNavigate={handleNavigate} />
+      </div>
     </div>
   );
 }

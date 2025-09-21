@@ -11,7 +11,12 @@ import ErrorBoundary from '../UI/ErrorBoundary';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { Plus, Users, Scroll, Sparkles } from 'lucide-react';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  currentView?: string;
+  onNavigate?: (view: string) => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ currentView = 'home', onNavigate }) => {
   const { user } = useAuth();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,9 +44,20 @@ const Dashboard: React.FC = () => {
   };
 
   const handleNavigate = (newView: string) => {
-    setView(newView as any);
+    const viewToSet = newView as any;
+    setView(viewToSet);
     setSelectedCharacter(null);
+    if (onNavigate) {
+      onNavigate(newView);
+    }
   };
+
+  // Update internal view when external currentView changes
+  React.useEffect(() => {
+    if (currentView && currentView !== view) {
+      setView(currentView as any);
+    }
+  }, [currentView]);
 
   const handleStartAdventure = () => {
     if (characters.length === 0) {

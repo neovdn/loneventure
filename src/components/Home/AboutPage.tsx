@@ -40,18 +40,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="min-h-screen fantasy-gradient">
+    <div className="min-h-screen fantasy-gradient pt-20">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center mb-8">
-          <button
-            onClick={onBack}
-            className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to Home</span>
-          </button>
-        </div>
-
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
@@ -66,7 +56,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           </div>
 
           {/* Mission */}
-          <div className="card-hero mb-16">
+          <div className="card-hero mb-16 text-center">
             <h2 className="text-2xl font-bold text-white mb-6 glow-text text-center">Our Mission</h2>
             <p className="text-slate-300 text-lg leading-relaxed text-center">
               We believe that epic adventures shouldn't be limited by schedules, group availability, 
@@ -100,25 +90,25 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           </div>
 
           {/* How It Works */}
-          <div className="card-hero mb-16">
+          <div className="card-hero mb-16 text-center">
             <h2 className="text-2xl font-bold text-white mb-8 glow-text text-center">How It Works</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform duration-300">
                   <span className="text-white font-bold text-xl">1</span>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Create Your Character</h3>
                 <p className="text-slate-300">Build your hero with authentic D&D races, classes, and backgrounds.</p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform duration-300">
                   <span className="text-white font-bold text-xl">2</span>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Begin Your Adventure</h3>
                 <p className="text-slate-300">Our AI Dungeon Master creates a personalized opening scene.</p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform duration-300">
                   <span className="text-white font-bold text-xl">3</span>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Shape Your Story</h3>
@@ -143,14 +133,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
 
           {/* Call to Action */}
           <div className="text-center">
-            <div className="card-hero">
+            <div className="card-hero text-center">
               <h2 className="text-2xl font-bold text-white mb-4 glow-text">Ready to Start Your Legend?</h2>
               <p className="text-slate-300 mb-8">
                 Join the growing community of solo adventurers and discover what epic tales await you.
               </p>
               <button
                 onClick={onBack}
-                className="btn-hero"
+                className="btn-hero mx-auto"
               >
                 Begin Your Journey
               </button>

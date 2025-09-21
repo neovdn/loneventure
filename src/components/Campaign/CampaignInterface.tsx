@@ -82,13 +82,13 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
     }
   };
 
-  const sendMessage = async () => {
-    if (!messageInput.trim() || !campaign || sending) return;
+  const sendMessage = async (messageContent: string) => {
+    if (!messageContent.trim() || !campaign || sending) return;
 
     setSending(true);
     const userMessage: Omit<ChatMessage, 'id'> = {
       sender: 'player',
-      content: messageInput.trim(),
+      content: messageContent.trim(),
       timestamp: new Date()
     };
 
@@ -98,7 +98,7 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
       
       // Get AI response
       const response = await graniteService.continueStory(
-        messageInput.trim(),
+        messageContent.trim(),
         character,
         campaign.conversationHistory
       );
@@ -128,23 +128,26 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      sendMessage(messageInput);
     }
   };
 
   const handleDiceRoll = async (dice: string, result: number) => {
     if (!campaign) return;
 
+    // Create and add the dice roll message to the chat history
     const rollMessage: Omit<ChatMessage, 'id'> = {
       sender: 'player',
-      content: `🎲 Rolled ${dice}: ${result}`,
+      content: `I rolled a ${dice} and got a ${result}.`,
       timestamp: new Date(),
       diceRoll: { dice, result }
     };
-
     await campaignService.addMessage(campaign.id, rollMessage);
     const updatedCampaign = await campaignService.getCampaign(campaign.id);
     setCampaign(updatedCampaign);
+
+    // Kirim hasil lemparan dadu ke AI untuk diproses
+    sendMessage(`I rolled a ${dice} and got a ${result}.`);
   };
 
   if (loading) {
@@ -242,7 +245,7 @@ const CampaignInterface: React.FC<CampaignInterfaceProps> = ({ character, onBack
                     disabled={sending}
                   />
                   <button
-                    onClick={sendMessage}
+                    onClick={() => sendMessage(messageInput)}
                     disabled={!messageInput.trim() || sending}
                     className="btn-primary px-4 flex items-center justify-center"
                   >

@@ -12,6 +12,8 @@ export interface Character {
   race: string;
   class: string;
   background: string;
+  backstory: string;
+  imageUrl?: string;
   level: number;
   abilityScores: {
     strength: number;
